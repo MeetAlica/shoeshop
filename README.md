@@ -1,0 +1,2 @@
+## I created this website as a test task for a job application.
+The task was to allow the user to personalize shoes, and I had to send an email upon ordering with the order details to the provided email address.
