@@ -24,7 +24,7 @@ export default function App() {
     const loadingToast = toast.loading("Sending your order...");
 
     try {
-      const res = await fetch("http://localhost:5000/api/order", {
+      const res = await fetch("backend-production-b39f.up.railway.app/api/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
