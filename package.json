@@ -1,0 +1,10 @@
+{
+  "name": "shoeshop-monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install-all": "cd backend && npm install && cd ../shoestore && npm install",
+    "build": "cd shoestore && npm install && npm run build && rm -rf ../backend/dist && cp -r dist ../backend/dist",
+    "start": "cd backend && node server.js"
+  }
+}
