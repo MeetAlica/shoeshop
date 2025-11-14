@@ -32,7 +32,7 @@ app.post("/api/order", async (req, res) => {
   try {
     const result = await resend.emails.send({
       from: process.env.FROM_EMAIL,
-      to: process.env.TO_EMAIL,
+      to: email,
       subject: `New Shoeshop Order from ${name}`,
       text: `
 Order details:
