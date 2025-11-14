@@ -1,13 +1,24 @@
+import path from "path";
+import { fileURLToPath } from "url";
 import express from "express";
 import nodemailer from "nodemailer";
 import cors from "cors";
 import dotenv from "dotenv";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "../shoestore/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../shoestore/dist", "index.html"));
+});
 
 app.post("/api/order", async (req, res) => {
   const { name, email, sole, top } = req.body;
