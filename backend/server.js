@@ -38,8 +38,8 @@ app.post("/api/order", async (req, res) => {
       tls: {
         rejectUnauthorized: false,
       },
-      connectionTimeout: 10000,
-      greetingTimeout: 5000,
+      connectionTimeout: 50000,
+      greetingTimeout: 50000,
     });
 
     await transporter.sendMail({
