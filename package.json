@@ -1,10 +1,9 @@
 {
-  "name": "shoeshop-monorepo",
-  "private": true,
+  "name": "shoeshop-fullstack",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "install-all": "cd backend && npm install && cd ../shoestore && npm install",
-    "build": "cd shoestore && npm install && npm run build && mkdir -p ../backend/dist && cp -r ./dist/* ../backend/dist",
+    "build": "cd shoestore && npm install && npm run build && mkdir -p ../backend/dist && cp -r ./dist/* ../backend/dist/",
     "start": "cd backend && npm install && node server.js"
   }
 }

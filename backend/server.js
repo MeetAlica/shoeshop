@@ -2,6 +2,7 @@ import express from "express";
 import nodemailer from "nodemailer";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 
 dotenv.config();
 
@@ -9,6 +10,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Statikus fájlok
+const frontendPath = path.join(__dirname, "dist");
+app.use(express.static(frontendPath));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
+
+// Email küldés
 app.post("/api/order", async (req, res) => {
   const { name, email, sole, top } = req.body;
 
