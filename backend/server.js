@@ -52,7 +52,7 @@ Your email: ${email}
 
 app.use(express.static(path.join(__dirname, "../shoestore/dist")));
 
-app.get("/*", (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "../shoestore/dist", "index.html"));
 });
 
