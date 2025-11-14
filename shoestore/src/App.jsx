@@ -21,35 +21,33 @@ export default function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Loading toast
     const loadingToast = toast.loading("Sending your order...");
 
     try {
+      // FETCH a deployolt backendhez
       const res = await fetch("https://backend-production-b39f.up.railway.app/api/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          sole,
-          top,
-        }),
+        body: JSON.stringify({ name, email, sole, top }),
       });
 
       const data = await res.json();
 
-      toast.dismiss(loadingToast);
+      toast.dismiss(loadingToast); // eltünteti a loading toastot
 
       if (res.ok) {
-        toast.success("Order succesfully sent!");
+        toast.success("Order successfully sent!");
+        // Reset form state
         setName("");
         setEmail("");
       } else {
-        toast.error("There was an error:" + data.message);
+        toast.error("Error: " + (data.message || "Something went wrong"));
       }
     } catch (err) {
       console.error(err);
       toast.dismiss(loadingToast);
-      toast.error("There was an error during sending the order.");
+      toast.error("Network error: could not send the order.");
     }
   };
 
@@ -59,11 +57,15 @@ export default function App() {
       style={{ backgroundImage: "url('/background.jpg')" }}
     >
       <Welcome onScrollClick={scrollToCustomizer} />
+
       <h1 className="text-3xl font-bold mb-6 text-zinc-300">Customize your new shoes!</h1>
+
       <div className="flex flex-col md:flex-row items-center gap-8">
         <Preview sole={sole} top={top} />
         <Customizer ref={customizerRef} sole={sole} top={top} setSole={setSole} setTop={setTop} />
       </div>
+
+      {/* Toast container */}
       <Toaster
         position="top-right"
         toastOptions={{
@@ -76,6 +78,8 @@ export default function App() {
           },
         }}
       />
+
+      {/* Order form */}
       <Order name={name} email={email} setName={setName} setEmail={setEmail} handleSubmit={handleSubmit} />
     </div>
   );

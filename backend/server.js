@@ -1,39 +1,35 @@
-import path from "path";
-import { fileURLToPath } from "url";
 import express from "express";
 import nodemailer from "nodemailer";
 import cors from "cors";
 import dotenv from "dotenv";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const frontendPath = path.join(__dirname, "dist");
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(frontendPath));
 
+// --- API végpont a rendeléshez ---
 app.post("/api/order", async (req, res) => {
   const { name, email, sole, top } = req.body;
 
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      secure: process.env.SMTP_PORT == 465, // 465 esetén true
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
     });
 
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: process.env.FROM_EMAIL,
       to: process.env.TO_EMAIL,
       subject: "Your Shoeshop order",
       text: `
-Dear ${name}!
+Dear ${name},
 
 We have received your order and processed it.
 
@@ -48,14 +44,8 @@ Your email: ${email}
     res.json({ message: "Email sent successfully!" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "An error occurred while sending the email." });
+    res.status(500).json({ message: "An error occurred during sending the email." });
   }
 });
 
-app.use(express.static(path.join(frontendPath, "../shoestore/dist")));
-
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "../shoestore/dist", "index.html"));
-});
-
-app.listen(process.env.PORT || 5000, () => console.log(`Server running on port ${process.env.PORT || 5000}`));
+app.listen(process.env.PORT || 5000, () => console.log(`✅ Server running on port ${process.env.PORT || 5000}!`));
